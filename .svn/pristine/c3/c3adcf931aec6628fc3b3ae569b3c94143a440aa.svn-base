@@ -1,0 +1,33 @@
+package org.db.psd.dao;
+
+import java.util.List;
+
+import org.db.psd.model.Sale;
+
+public interface SaleDAO {
+
+	/**
+	 * 进行销售，创建销售信息
+	 * @param sale
+	 * @return
+	 */
+	public boolean create(Sale sale);
+	/**
+	 * 总行数
+	 * @return
+	 */
+	public long allrow ();
+	/**
+	 * 修改销售信息
+	 * @param sale
+	 * @return
+	 */
+	public boolean update (Sale sale);
+	/**
+	 * 
+	 * @param position 当前页
+	 * @param size 显示的数量
+	 * @return
+	 */
+	public List<Sale> SaleList(long position, int size);
+}

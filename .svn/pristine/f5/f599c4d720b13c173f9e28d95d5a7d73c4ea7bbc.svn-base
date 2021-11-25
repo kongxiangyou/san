@@ -1,0 +1,81 @@
+package org.db.psd.impl;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.db.psd.base.Execute_CRUD;
+import org.db.psd.dao.OutboundDAO;
+import org.db.psd.model.Outbound;
+
+public class OutboundDAOImplement extends Execute_CRUD implements OutboundDAO {
+
+	@Override
+	public boolean outboundCreate(Outbound outbound) {
+	
+		 String sql = "insert into outbound(outboundNum, outboundTime, produceId, employeeId, inventoryId) value (?,now(),?,?,?)";
+		 
+		 int outboundNum = outbound.getOutboundNum();
+		 int produceId = outbound.getProduceId();
+		 int employeeId = outbound.getEmployeeId();
+		 int inventoryId = outbound.getInventoryId();	
+		 
+		 Object[] objects = {outboundNum, produceId, employeeId, inventoryId};
+		 
+		 boolean b = execute_CUD(sql, objects);		 
+		return b;
+	}
+
+	@Override
+	public Outbound outboundById(int outboundId) {
+		String sql = "select * from outbound where outboundId = ?";
+		Object[] objects = {outboundId};
+		Outbound outbound = null;
+		ResultSet rs = execute_Query(sql, objects);
+		try {
+			if(rs.next()) {
+				int outboundNum = rs.getInt("outboundNum");
+				Date outboundTime = rs.getDate("outboundTime");
+				int produceId = rs.getInt("produceId");
+				int employeeId = rs.getInt("employeeId");
+				int inventoryId = rs.getInt("inventoryId");
+				outbound = new Outbound(outboundId, outboundNum, outboundTime, produceId, employeeId, inventoryId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			closeRs(rs);
+		}
+		
+		return outbound;
+	}
+
+	@Override
+	public List<Outbound> outboundList() {
+		String sql = "select * from outbound";
+		
+		List<Outbound> outbounds = new ArrayList<Outbound>();
+		ResultSet rs = execute_Query(sql, null);
+		try {
+			while(rs.next()) {
+				int outboundId = rs.getInt("outboundId");
+				int outboundNum = rs.getInt("outboundNum");
+				Date outboundTime = rs.getDate("outboundTime");
+				int produceId = rs.getInt("produceId");
+				int employeeId = rs.getInt("employeeId");
+				int inventoryId = rs.getInt("inventoryId");
+				Outbound outbound = new Outbound(outboundId, outboundNum, outboundTime, produceId, employeeId, inventoryId);
+				outbounds.add(outbound);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			closeRs(rs);
+		}
+		
+		return outbounds;
+	}
+
+}

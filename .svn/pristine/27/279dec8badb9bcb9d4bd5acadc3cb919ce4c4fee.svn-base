@@ -1,0 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<a href="<%=request.getContextPath()%>/warehouseman/warehouseShow.jsp">返回</a>
+<a href="<%=request.getContextPath()%>/Supermanager/show.jsp">主页</a>
+<div>
+<span>入库数量: </span> ${requestScope.inventory.inventoryNum }"
+<span>入库的位置:</span> ${requestScope.inventory.inventoryPostion }"> 
+<span> 入库时间: </span> ${requestScope.inventory.inventoryTime }"> 
+<span> 该商品还可以入库的数量: </span>${requestScope.inventory.inventoryRemain }"
+<span> 商品ID: </span>${requestScope.inventory.produceId }"
+<span> 员工Id: </span>${requestScope.inventory.employeeId }"	
+ <span> 采购单Id: </span>${ requestScope.inventory.procurementId  }"
+</div>
+</body>
+</html>

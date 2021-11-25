@@ -1,0 +1,54 @@
+package org.db.psd.server;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.db.psd.fatory.FatoryModel;
+import org.db.psd.model.Inventory;
+import org.db.psd.model.Shop;
+@WebServlet("/OutBoundServer")
+public class OutBoundServer extends HttpServlet {
+
+	String op = null;
+	String path = null;
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 this.doPost(request, response);
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 op = request.getParameter("op");
+		 
+		 if(op.equals("create")) {
+			 
+			 doCreate(request, response);
+		 }else if(op.equals("list")) {
+			 
+		 }else if(op.equals("set")) {
+			 
+		 }
+		 
+		 request.getRequestDispatcher(path).forward(request,response);
+	}
+	protected void doCreate(HttpServletRequest request, HttpServletResponse response) {
+		
+	}
+	protected void doSet(HttpServletRequest request, HttpServletResponse response) {
+		int inventoryId =Integer.parseInt( request.getParameter("inventoryId")) ;
+		  int produceId =Integer.parseInt( request.getParameter("produceId")) ;
+		  int employeeId =Integer.parseInt( request.getParameter("employeeId")) ;
+		Inventory  inventory = new Inventory(inventoryId, 0, null, null, 0, produceId, employeeId, 0);
+		List<Shop> shops = FatoryModel.getInstanceFatory().getShopDAO().shopList();
+		request.setAttribute("shops", shops);
+		request.setAttribute("inventory", inventory);
+		path="/warehouseman/outboundCreate.jsp";
+	}
+	
+}

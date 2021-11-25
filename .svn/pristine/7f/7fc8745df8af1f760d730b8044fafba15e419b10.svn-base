@@ -1,0 +1,37 @@
+package org.db.psd.impl;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.db.psd.base.Execute_CRUD;
+import org.db.psd.dao.StoreDAO;
+import org.db.psd.model.Inventory;
+import org.db.psd.model.Store;
+
+public class StoreDAOImplement extends Execute_CRUD implements StoreDAO {
+
+	@Override
+	public boolean storeCreate(Store store) {
+		String sql = "insert into store (produceNum,produceId) value (?,?)";
+		int produceNum = store.getProduceNum();
+		int produceId = store.getProduceId();
+		Object[] objects = { produceNum, produceId };
+		boolean b = execute_CUD(sql, objects);
+		return b;
+	}
+
+	@Override
+	public boolean storeInventoryChangeNumber(Inventory inventory) {
+		boolean b = false;
+		String sql = "update store set produceNum = (produceNum + ?) where produceId = ?";
+		
+		int inventoryNum = inventory.getInventoryNum();
+		int produceId = inventory.getProduceId();
+		Object[] objects2 = { inventoryNum, produceId };
+			
+		b = execute_CUD(sql, objects2);
+
+		return b;
+	}
+
+}

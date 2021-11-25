@@ -1,0 +1,135 @@
+package org.db.psd.impl;
+
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.db.psd.base.Execute_CRUD;
+import org.db.psd.dao.InventoryDAO;
+import org.db.psd.model.Inventory;
+
+public class InventoryDAOImplement extends Execute_CRUD implements InventoryDAO {
+
+	@Override
+	public boolean inventoryIudgeByProcurementId(int procurementId) {
+
+		boolean b = true;
+		String sql = "select counit(*) from inventory where procurementId = ?";
+		Object[] objects = { procurementId };
+		ResultSet rs = execute_Query(sql, objects);
+		try {
+			if (rs.next()) {
+				int count = rs.getInt(1);
+				if (count > 0) {
+					b = false;
+				}
+			}
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		} finally {
+			closeRs(rs);
+		}
+		return b;
+	}
+
+	@Override
+	public int inventoryTOProcurementRemainSum(int procurementId) {
+		String sql = "SELECT p.procurementNum -  SUM(i.inventoryNum) " + "FROM procurement p INNER JOIN inventory i "
+				+ "ON p.procurementId = i.procurementId AND i.procurementId = ?";
+		Object[] objects = { procurementId };
+		ResultSet rs = execute_Query(sql, objects);
+		int remain = 0;
+		try {
+			if (rs.next()) {
+				remain = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeRs(rs);
+		}
+
+		return remain;
+	}
+
+	@Override
+	public boolean inventtoryCrete(Inventory inventory) {
+		
+		String sql = "INSERT INTO inventory"
+				+ "(inventoryNum,inventoryTime,inventoryPostion,inventoryRemain,produceId,employeeId,procurementId)"
+				+ "VALUE (?,NOW(),?,?,?,?,?);";
+		int inventoryNum = inventory.getInventoryNum();
+		String inventoryPostion = inventory.getInventoryPostion();
+		int inventoryRemain = inventory.getInventoryRemain();
+		int employeeId = inventory.getEmployeeId();
+		int produceId = inventory.getProduceId();
+		int procurementId = inventory.getProcurementId();
+		Object[] objects = { inventoryNum, inventoryPostion, inventoryRemain, produceId, employeeId, procurementId };
+
+		boolean b = execute_CUD(sql, objects);
+		return b;
+	}
+
+	@Override
+	public Inventory inventoryById(int inventoryId) {
+		String sql = "select * from inventory where inventoryId = ?";
+		Object[] objects = { inventoryId };
+		ResultSet rs = execute_Query(sql, objects);
+		Inventory inventory = null;
+		try {
+			if (rs.next()) {
+				int inventoryNum = rs.getInt("inventoryNum");
+				String inventoryPostion = rs.getString("inventoryPostion");
+				int inventoryRemain = rs.getInt("inventoryRemain");
+				int employeeId = rs.getInt("employeeId");
+				int produceId = rs.getInt("produceId");
+				int procurementId = rs.getInt("procurementId");
+				Date inventoryTime = rs.getDate("inventoryTime");
+				inventory = new Inventory(inventoryId, inventoryNum, inventoryTime, inventoryPostion, inventoryRemain,
+						produceId, employeeId, procurementId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return inventory;
+	}
+
+	@Override
+	public List<Inventory> inventorieListByProduceId(int produceId) {
+		String sql = "select * from inventory where produceId = ?";
+		Object[] objects = { produceId };
+		ResultSet rs = execute_Query(sql, objects);
+		List<Inventory> inventories = new ArrayList<Inventory>();
+		try {
+			while (rs.next()) {
+				int inventoryNum = rs.getInt("inventoryNum");
+				String inventoryPostion = rs.getString("inventoryPostion");
+				int inventoryRemain = rs.getInt("inventoryRemain");
+				int employeeId = rs.getInt("employeeId");
+				int procurementId = rs.getInt("procurementId");
+				Date inventoryTime = rs.getDate("inventoryTime");
+				int inventoryId = rs.getInt("inventoryId");
+				Inventory inventory = new Inventory(inventoryId, inventoryNum, inventoryTime, inventoryPostion,
+						inventoryRemain, produceId, employeeId, procurementId);
+				inventories.add(inventory);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return inventories;
+	}
+
+	public static void main(String[] args) {
+		InventoryDAO inventoryDAO = new InventoryDAOImplement();
+		List<Inventory> vs = inventoryDAO.inventorieListByProduceId(5);
+		for(Inventory v : vs) {
+			System.out.println(v.getInventoryNum());
+		}
+	}
+
+}

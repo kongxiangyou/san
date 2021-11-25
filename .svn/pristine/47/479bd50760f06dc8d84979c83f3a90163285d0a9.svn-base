@@ -1,0 +1,38 @@
+package org.db.psd.dao;
+
+import java.util.List;
+
+import org.db.psd.model.Produce;
+
+public interface ProduceDAO {
+
+	/**
+	 * 创建商品信息，并且在库存表中也相应的添加数据，默认库存数量为0
+	 * @param produce
+	 * @return
+	 */
+	public boolean produceCreate(Produce produce);
+	
+	
+	/**
+	 * 修改商品信息
+	 * @param produce
+	 * @return
+	 */
+	public boolean produceUpdate(Produce produce);
+	
+	/**
+	 * 查看商品列表
+	 * @return
+	 */
+	public List<Produce> produceList();
+	
+	
+	/**
+	 * 点击列表显示商品详细信息
+	 * @param produceId
+	 * @return
+	 */
+	public Produce producebyId(int produceId);
+	
+}

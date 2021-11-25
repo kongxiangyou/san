@@ -1,0 +1,92 @@
+package org.db.psd.model;
+
+import java.util.Date;
+import java.sql.*;
+
+/**
+ * @author lanruijiang Mon Aug 23 10:43:06 CST 2021
+ *         <p>
+ *         shopstore 实体类
+ *         </P>
+ */
+
+public class Shopstore {
+	private int shopStoreId;
+	private int shopStoreNum;
+	private Date shopStoreTime;
+	private int shopId;
+	private int produceId;
+	private int outboundId;
+	private int employeeId;
+
+	public Shopstore() {
+	};
+
+	public Shopstore(int shopStoreId, int shopStoreNum, Date shopStoreTime, int shopId, int produceId, int outboundId,
+			int employeeId) {
+		super();
+		this.shopStoreId = shopStoreId;
+		this.shopStoreNum = shopStoreNum;
+		this.shopStoreTime = shopStoreTime;
+		this.shopId = shopId;
+		this.produceId = produceId;
+		this.outboundId = outboundId;
+		this.employeeId = employeeId;
+	}
+
+	public void setShopStoreId(int shopStoreId) {
+		this.shopStoreId = shopStoreId;
+	}
+
+	public int getShopStoreId() {
+		return shopStoreId;
+	}
+
+	public void setShopStoreNum(int shopStoreNum) {
+		this.shopStoreNum = shopStoreNum;
+	}
+
+	public int getShopStoreNum() {
+		return shopStoreNum;
+	}
+
+	public void setShopStoreTime(Date shopStoreTime) {
+		this.shopStoreTime = shopStoreTime;
+	}
+
+	public Date getShopStoreTime() {
+		return shopStoreTime;
+	}
+
+	public void setShopId(int shopId) {
+		this.shopId = shopId;
+	}
+
+	public int getShopId() {
+		return shopId;
+	}
+
+	public void setProduceId(int produceId) {
+		this.produceId = produceId;
+	}
+
+	public int getProduceId() {
+		return produceId;
+	}
+
+	public void setOutboundId(int outboundId) {
+		this.outboundId = outboundId;
+	}
+
+	public int getOutboundId() {
+		return outboundId;
+	}
+
+	public void setEmployeeId(int employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public int getEmployeeId() {
+		return employeeId;
+	}
+}

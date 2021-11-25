@@ -1,0 +1,28 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<a href="<%=request.getContextPath()%>/ShopManager/ShopMain.jsp">首页</a>
+<a href="<%=request.getContextPath()%>/SaleServer?op=set">返回</a>
+<% int shopId = Integer.parseInt(request.getParameter("shopId")) ;
+int produceId = Integer.parseInt(request.getParameter("produceId"));
+int shopstoreId = Integer.parseInt(request.getParameter("shopstoreId"));
+%>
+<form action="<%=request.getContextPath()%>/SaleServer?op=create" method="post">
+<input type="hidden" value="<%=shopstoreId %>  " name="shopstoreId"/>
+ <span>销售价格: </span> <input type="text" name="salePrice"/>
+ 
+<input type="hidden" value="<%=shopId %>  " name="shopId"/>
+<span>数量: </span>  <input type="text" name="saleNum"/>
+<input type="hidden" value="<%=produceId %>" name="produceId"/>
+ 
+<input type="submit" value="确定"/> 
+ 
+</form>
+</body>
+</html>

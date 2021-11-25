@@ -1,0 +1,128 @@
+package org.db.psd.impl;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.db.psd.base.Execute_CRUD;
+import org.db.psd.dao.ProduceDAO;
+import org.db.psd.dao.StoreDAO;
+import org.db.psd.model.Produce;
+import org.db.psd.model.Store;
+
+public class ProduceDAOImplement extends Execute_CRUD implements ProduceDAO {
+
+	@Override
+	public boolean produceCreate(Produce produce) {
+		boolean b = false;
+		String sql = "insert into produce (produceName,produceISBN,produceDescribe,employeeId) value (?,?,?,?)";
+		
+		String produceName = produce.getProduceName();
+		String produceISBN = produce.getProduceISBN();
+		String produceDescribe = produce.getProduceDescribe();
+		int employeeId = produce.getEmployeeId();
+
+		Object[] objects = { produceName, produceISBN, produceDescribe, employeeId };
+
+		int produceId = execute_C_Key(sql, objects);
+
+		if (produceId > 0) {
+			StoreDAO storeDAO = new StoreDAOImplement();
+			Store store = new Store(0, 0, produceId);
+			b = storeDAO.storeCreate(store);
+		}
+
+		return b;
+	}
+
+	@Override
+	public boolean produceUpdate(Produce produce) {
+		String sql = "update produce set produceName = ? ,produceISBN = ?,produceDescribe= ?,employeeId = ? where produceId = ? ";
+
+		int produceId = produce.getProduceId();
+		String produceName = produce.getProduceName();
+		String produceISBN = produce.getProduceISBN();
+		String produceDescribe = produce.getProduceDescribe();
+		int employeeId = produce.getEmployeeId();
+
+		Object[] objects = { produceName, produceISBN, produceDescribe, employeeId, produceId };
+
+		boolean b = execute_CUD(sql, objects);
+
+		return b;
+	}
+
+	/**
+	 * 通过id号查询商品信息
+	 */
+	@Override
+	public Produce producebyId(int produceId) {
+		String sql = "select * from Produce where produceId =?";
+
+		Object[] objects = { produceId };
+		ResultSet rs = execute_Query(sql, objects);
+		Produce produce = null;
+		try {
+			if (rs.next()) {
+				String produceName = produce.getProduceName();
+				String produceISBN = produce.getProduceISBN();
+				String produceDescribe = produce.getProduceDescribe();
+				int employeeId = produce.getEmployeeId();
+				produce = new Produce(produceId, produceName, produceISBN, produceDescribe, employeeId);
+			} else {
+				produce = null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeRs(rs);
+		}
+		return produce;
+	}
+
+	@Override
+	/**
+	 * 点击列表查询商品所有信息
+	 */
+	public List<Produce> produceList() {
+		String sql = "select * from produce";
+		ResultSet rs = execute_Query(sql, null);
+		List<Produce> produces = new ArrayList<Produce>(); // 用来存储数据
+		Produce produce = null;
+		try {
+			while (rs.next()) {
+				int produceId = rs.getInt("produceId");
+				String produceName = rs.getString("produceName");
+				String produceISBN = rs.getString("produceISBN");
+				String produceDescribe = rs.getString("produceDescribe");
+				int employeeId = rs.getInt("employeeId");
+				produce = new Produce(produceId, produceName, produceISBN, produceDescribe, employeeId);
+//				Produce produce = new Produce();
+//				produce.setEmployeeId(employeeId);
+//				produce.setProduceDescribe(produceDescribe);
+//				produce.setProduceISBN(produceISBN);
+//				produce.setProduceId(produceId);
+//				produce.setProduceName(produceName);
+//				System.out.println(produce);
+				produces.add(produce);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeRs(rs);
+		}
+		return produces;
+	}
+
+	public static void main(String[] args) {
+		ProduceDAOImplement pi = new ProduceDAOImplement();
+		List<Produce> produces =  pi.produceList();
+		for(Produce p : produces) {
+			System.out.println(p.getProduceId() + " : " + p.getProduceName() +" : " + p.getProduceISBN());
+		}
+		
+
+	}
+
+}

@@ -1,0 +1,43 @@
+package org.db.psd.server;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.db.psd.fatory.FatoryModel;
+import org.db.psd.model.Employee;
+
+@WebServlet("/EmployeeServer")
+public class EmployeeServer extends HttpServlet {
+
+	String op = null;
+	String path = null;
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 this.doPost(request, response);
+	}
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 op = request.getParameter("op");
+		 if(op.equals("login")) {
+			 
+		 }else if(op.equals("update")) {
+			 
+		 }
+		 request.getRequestDispatcher(path).forward(request, response);
+	}
+	protected void doLogin(HttpServletRequest request, HttpServletResponse response) {
+		String employeeCode = request.getParameter("employeeCode");
+		String employeePassword = request.getParameter("employeePassword");
+		
+		Employee employee = new Employee(0, employeeCode, null, employeePassword, null, null, null, null, null, null, null, null, null, 0);
+		int value = FatoryModel.getInstanceFatory().getEmployeeDAO().employeeLogin(employee);
+		if(value==1) {
+			
+		}
+	}
+}
