@@ -89,7 +89,7 @@ public class inventoryServer extends HttpServlet {
 		}else {
 			inventoryNum= procurementNum-inventoryNum;
 		}
-		//System.out.println("++"+inventoryNum+","+inventoryPostion+","+employeeId+","+employeeId+","+procurementId+","+procurementNum);
+		//System.out.println("++"+inventoryNum+","+inventoryPostion+","+employeeId+","+produceId+","+procurementId+","+procurementNum);
 		Inventory inventory = new Inventory(0, inventoryNum, null,inventoryPostion , 0, produceId, employeeId, procurementId,0,0,null);
 		 boolean b = FatoryModel.getInstanceFatory().getInventoryDAO().inventoryCrete(inventory);
 	
@@ -97,7 +97,8 @@ public class inventoryServer extends HttpServlet {
 			 path="/inventoryServer?op=list";
 		 }else {
 			 System.out.println("入库失败！");
-			 path="/warehouseman/warehousemain.jsp";
+				/* path="/warehouseman/warehousemain.jsp"; */
+			 path="/false.jsp";
 		 }
 	}
 	protected void doList(HttpServletRequest request, HttpServletResponse response) {
@@ -127,7 +128,8 @@ public class inventoryServer extends HttpServlet {
 		}else {
 		
 			 System.out.println("查询失败！");
-			 path="/warehouseman/warehousemain.jsp";
+				/* path="/warehouseman/warehousemain.jsp"; */
+			 path="/false.jsp";
 		 }
 		
 	}
@@ -141,7 +143,8 @@ public class inventoryServer extends HttpServlet {
 		}else {
 		
 			 System.out.println("查询失败！");
-			 path="/warehouseman/warehousemain.jsp";
+				/* path="/warehouseman/warehousemain.jsp"; */
+			 path="/Supermanager/welcome.jsp";
 		 }
 	}
 	protected void doshowCreate(HttpServletRequest request, HttpServletResponse response) {

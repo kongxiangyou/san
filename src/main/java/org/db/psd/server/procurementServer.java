@@ -91,22 +91,16 @@ public class procurementServer extends HttpServlet {
 	}
 	protected void doById(HttpServletRequest request, HttpServletResponse response) {
 		int procurementId = Integer.parseInt(request.getParameter("procurementId") ) ;
-		
+	 
 		Procurement procurement = FatoryModel.getInstanceFatory().getProcurementDAO().procurementById(procurementId);
 		
 		if(procurement!=null) {
 			request.setAttribute("procurement", procurement);
 			path = "/Producemanager/ProduceManagerById.jsp";
-		}else {
-			PrintWriter out;
-			try {
-				out = response.getWriter();
-				out.print("没有查到采购单");
-			} catch (IOException e) { 
-				e.printStackTrace();
-			}
+		}else {		 
 			System.out.println("没有查到采购单");
-			path="/produce/produceMain.jsp";
+			/* path="/produce/produceMain.jsp"; */
+			path="/procurementServer?op=select";
 		}
 	}
 	protected void doUpdate(HttpServletRequest request, HttpServletResponse response) {
@@ -124,21 +118,19 @@ public class procurementServer extends HttpServlet {
 //		int produceId = Integer.parseInt(request.getParameter("produceId") ) ;
 //		 
 //		int employeeId = Integer.parseInt(request.getParameter("employeeId") ) ;
-		
+		System.out.println(procurementId+ procurementNum+ procurementPrice+ procurementTime+ procurementSuppliers+ employeeName+produceName);
+		/*
+		 * procurementId, int procurementNum, double procurementPrice, String
+		 * procurementTime, procurementSuppliers, int produceId, int employeeId, String
+		 * employeeName, String produceName
+		 */
 		Procurement procurement = new Procurement(procurementId, procurementNum, procurementPrice, procurementTime, procurementSuppliers, 0, 0, employeeName,produceName);
 		boolean b = FatoryModel.getInstanceFatory().getProcurementDAO().procurementUpdate(procurement);
 		if(b) {
 			path="/procurementServer?op=select";
-		}else {
-			PrintWriter out;
-			try {
-				out = response.getWriter();
-				out.print("修改商品失败");
-			} catch (IOException e) { 
-				e.printStackTrace();
-			}
+		}else {		
 			System.out.println("修改商品失败");
-			path="/procurementServer?op=select";
+			path="/false.jsp";
 		}
 	}
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
@@ -161,24 +153,14 @@ public class procurementServer extends HttpServlet {
 	protected void doByMore(HttpServletRequest request, HttpServletResponse response) {
 		String wordkey = request.getParameter("wordkey");
 		int type = Integer.parseInt(request.getParameter("type"));
-		 
-		PrintWriter out;
-		
-		
 		List<Procurement> procurement = FatoryModel.getInstanceFatory().getProcurementDAO().procurementList(wordkey, type);
 		//System.out.println(procurement+"===");
 		if(procurement!=null) {
 			request.setAttribute("procurement", procurement);
 			path = "/Producemanager/ProduceManagerByMore.jsp";
 		}else {
-			try {
-				out = response.getWriter();
-				out.print("查询失败");
-			} catch (IOException e) { 
-				e.printStackTrace();
-			}
-			
-			path="/produce/produceMain.jsp";
+				System.out.print("查询失败");
+			path="/false.jsp";
 		}
 		
 	}

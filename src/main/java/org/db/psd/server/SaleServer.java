@@ -41,6 +41,7 @@ public class SaleServer extends HttpServlet {
 			 doByMore(request, response);
 		 }
 		 request.getRequestDispatcher(path).forward(request, response);
+		 
 	}
 	protected void doSet(HttpServletRequest request, HttpServletResponse response) {
 		int newpage = 1;
@@ -71,10 +72,11 @@ public class SaleServer extends HttpServlet {
 		 
 		 int employeeId =  employee.getEmployeeId();
 		 int produceId = Integer.parseInt(request.getParameter("produceId")) ;
+		 
 		 int shopStoreId = Integer.parseInt(request.getParameter("shopStoreId")) ;
 		 
 		 int shopId = Integer.parseInt(request.getParameter("shopId")) ;
-		 
+		// System.out.println(produceId+"+++++++++++++"+"=========="+shopId);
 		 Sale sale = new Sale(0, salePrice, saleNum, 0, null, employeeId, produceId, shopStoreId, shopId,null,null);
 		 int saleId =  FatoryModel.getInstanceFatory().getSaleDAO().create(sale);
 		 sale=new Sale(saleId, salePrice, saleNum, 0, null, employeeId, produceId, shopStoreId, shopId, null, null);
@@ -116,9 +118,10 @@ public class SaleServer extends HttpServlet {
 	protected void doByMore(HttpServletRequest request, HttpServletResponse response) {
 		int type = Integer.parseInt(request.getParameter("type"));
 		String wordkey = request.getParameter("wordkey");
+		System.out.println(wordkey+"------"+type);
 		List<Sale> sales = FatoryModel.getInstanceFatory().getSaleDAO().ByMore(wordkey, type);
 		request.setAttribute("sales", sales);
-		 
+		 System.out.println(sales+"++++");
 		path="/ShopManager/SaleByMore.jsp";
 	}
 }

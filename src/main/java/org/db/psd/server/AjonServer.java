@@ -26,8 +26,11 @@ public class AjonServer extends HttpServlet {
 	}
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		/*
+		 * op = request.getParameter("op"); if(op.equals("set")) { doSet(request,
+		 * response); } request.getRequestDispatcher(path).forward(request, response);
+		 */
 		 
-
 		 ObjectMapper objectMapper= new ObjectMapper();
 		 String pstatm = request.getParameter("pstatm");
 		 Shopstore shopstore = null;
@@ -40,7 +43,7 @@ public class AjonServer extends HttpServlet {
 		}
 		 int produceId = shopstore.getProduceId();
 		 int shopId = shopstore.getShopId();
-		// System.out.println(shopId+"--"+produceId);
+//		 System.out.println(shopId+"--"+produceId);
 				 PrintWriter out = null;
 		 try {
 			  out = response.getWriter();
@@ -48,7 +51,7 @@ public class AjonServer extends HttpServlet {
 			e1.printStackTrace();
 		}
 		   shopstore = FatoryModel.getInstanceFatory().getShopStoreDAO().byProduceId(produceId, shopId);
-		
+//		System.out.println(shopstore.getShopStoreNum()+"==============");
 		   //将Java对象转成JSON格式
 		 String patm = null;
 		 try {
@@ -58,4 +61,10 @@ public class AjonServer extends HttpServlet {
 		}
 		 out.print(patm);
 	}
+	/*
+	 * protected void doSet(HttpServletRequest request, HttpServletResponse
+	 * response) {
+	 * 
+	 * }
+	 */
 }

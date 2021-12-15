@@ -34,6 +34,8 @@ public class EmployeeDAOImplement extends Execute_CRUD implements EmployeeDAO {
 					if(employeeId<=0) {
 						System.out.println("用户不存在！");
 					}
+				}else {
+					row=0;
 				}
 			} catch (SQLException e) { 
 				e.printStackTrace();
@@ -56,7 +58,7 @@ public class EmployeeDAOImplement extends Execute_CRUD implements EmployeeDAO {
 		String employeeGender = employee.getEmployeeGender();
 		String employeePhone = employee.getEmployeePhone();
 		String employeeEmail=employee.getEmployeeEmail();
-		Date employeeBrithday = employee.getemployeeBrithday();
+		String employeeBrithday = employee.getemployeeBrithday();
 		String employeeIdentity = employee.getEmployeeIdentity();
 		String employeeState = employee.getEmployeeState();
 		String employeeIntroduction = employee.getEmployeeIntroduction();
@@ -69,10 +71,10 @@ public class EmployeeDAOImplement extends Execute_CRUD implements EmployeeDAO {
 			b=false;
 			System.out.println("用户已存在");
 		}else {
-			String sql = "insert into employee ( employeeCode, employeeName, employeePassword,\r\n"
-					+ "						employeeGender,  employeePhone,  employeeEmail, \r\n"
-					+ "					 employeeBrithday,  employeeIdentity,  employeeState,  employeeIntroduction,\r\n"
-					+ "					 employeeAddress,  employeeEducation,employeeJobId,pciture) value (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql = "insert into employee ( employeeCode, employeeName, employeePassword,"
+					+ "employeeGender,  employeePhone,  employeeEmail, "
+					+ " employeeBrithday,  employeeIdentity,  employeeState,  employeeIntroduction,"
+					+ "employeeAddress,  employeeEducation,employeeJobId,pciture) value (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			Object[] objects = {  employeeCode, employeeName, employeePassword,
 						employeeGender,  employeePhone,  employeeEmail, 
 					 employeeBrithday,  employeeIdentity,  employeeState,  employeeIntroduction,
@@ -99,14 +101,14 @@ public class EmployeeDAOImplement extends Execute_CRUD implements EmployeeDAO {
 	@Override
 	public boolean employeeUpdateInformation(Employee employee) {
 		String sql = "update employee set employeeName =?, "
-				+ "employeePassword =?, employeePhone=?,  employeeEmail =?,  employeeBrithday=?, "
+				+ " employeeGender=?,employeePhone=?,  employeeEmail =?,  employeeBrithday=?, "
 				+ " employeeIdentity=?,  employeeState=?,  employeeIntroduction=?,employeeAddress=?,  employeeEducation=? , pciture=?  where employeeCode = ?";
 		
-		String employeeName = employee.getEmployeeName();
-		String employeePassword = employee.getEmployeePassword();
+		String employeeName = employee.getEmployeeName(); 
+		String employeeGender = employee.getEmployeeGender(); 
 		String employeePhone = employee.getEmployeePhone();
 		String employeeEmail = employee.getEmployeeEmail();
-		Date employeeBrithday = employee.getemployeeBrithday();
+		String employeeBrithday = employee.getemployeeBrithday();
 		String employeeIdentity = employee.getEmployeeIdentity();
 		String employeeState = employee.getEmployeeState();
 		String employeeIntroduction = employee.getEmployeeIntroduction();
@@ -115,8 +117,8 @@ public class EmployeeDAOImplement extends Execute_CRUD implements EmployeeDAO {
 		String pciture = employee.getPciture();
 		//int employeeJobId = employee.getEmployeeJobId();
 		String employeeCode = employee.getEmployeeCode();
-		Object[] objects = { employeeName,employeePassword, employeePhone, employeeEmail,employeeBrithday,employeeIdentity,employeeState,employeeIntroduction,employeeAddress,employeeEducation,
-				0,pciture,employeeCode };
+		Object[] objects = { employeeName,employeeGender, employeePhone, employeeEmail,employeeBrithday,employeeIdentity,employeeState,employeeIntroduction,employeeAddress,employeeEducation,
+				pciture,employeeCode };
 		boolean b = execute_CUD(sql, objects);
 		return b;
 	}
@@ -126,7 +128,9 @@ public class EmployeeDAOImplement extends Execute_CRUD implements EmployeeDAO {
 
 		String sql = "select e.*,j.employeeJobName,j.employeeDescribe from employee e inner join employeeJob j on e.employeeJobId=j.employeeJobId and e.employeeCode = ? ";
 		Object[] objects = { employeeCode };
+		 
 		ResultSet rs = execute_Query(sql, objects);
+		 
 		Employee employee = null;
 		try {
 			if (rs.next()) {
@@ -136,7 +140,7 @@ public class EmployeeDAOImplement extends Execute_CRUD implements EmployeeDAO {
 				String employeeGender = rs.getString("employeeGender");
 				String employeePhone = rs.getString("employeePhone");
 				String employeeEmail = rs.getString("employeeEmail");
-				Date employeeBrithday = rs.getDate("employeeBrithday");
+				String employeeBrithday = rs.getString("employeeBrithday");
 				String employeeIdentity =  rs.getString("employeeIdentity");
 				String employeeState =  rs.getString("employeeState");
 				String employeeIntroduction =  rs.getString("employeeIntroduction");
@@ -150,15 +154,14 @@ public class EmployeeDAOImplement extends Execute_CRUD implements EmployeeDAO {
 						 employeeGender, employeePhone, employeeEmail, employeeBrithday,
 						 employeeIdentity, employeeState, employeeIntroduction,
 						 employeeAddress, employeeEducation, employeeJobId,employeeJobName,employeeDescribe,pciture);	
-			} else {
-				employee = null;
-			}
+				  
+			}  
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			closeRs(rs);
 		}
-
+		 
 		return employee;
 	}
 
@@ -267,7 +270,7 @@ public class EmployeeDAOImplement extends Execute_CRUD implements EmployeeDAO {
 				String employeeGender = rs.getString("employeeGender");
 				String employeePhone = rs.getString("employeePhone");
 				String employeeEmail = rs.getString("employeeEmail");
-				Date employeeBrithday = rs.getDate("employeeBrithday");
+				String employeeBrithday = rs.getString("employeeBrithday");
 				String employeeIdentity =  rs.getString("employeeIdentity");
 				String employeeState =  rs.getString("employeeState");
 				String employeeIntroduction =  rs.getString("employeeIntroduction");
@@ -314,12 +317,7 @@ public class EmployeeDAOImplement extends Execute_CRUD implements EmployeeDAO {
 		return b;
 	}
 
-	public static void main(String[] args) {
-//		EmployeeDAOImplement e=new EmployeeDAOImplement();
-//		String code = "admin";
-//		boolean b = e.employeeJudgeByemployeeCode(code);
-//		System.out.println(b);
-	}
+ 
 
 	@Override
 	public List<Employee> employeeList() { 
@@ -339,7 +337,7 @@ public class EmployeeDAOImplement extends Execute_CRUD implements EmployeeDAO {
 				String employeeGender = rs.getString("employeeGender");
 				String employeePhone = rs.getString("employeePhone");
 				String employeeEmail = rs.getString("employeeEmail");
-				Date employeeBrithday = rs.getDate("employeeBrithday");
+				String employeeBrithday = rs.getString("employeeBrithday");
 				String employeeIdentity =  rs.getString("employeeIdentity");
 				String employeeState =  rs.getString("employeeState");
 				String employeeIntroduction =  rs.getString("employeeIntroduction");

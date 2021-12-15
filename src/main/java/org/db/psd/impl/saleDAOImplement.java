@@ -98,11 +98,11 @@ public class saleDAOImplement extends Execute_CRUD implements SaleDAO  {
 	public List<Sale> ByMore(String wordkey, int type) {
 		 String sql = null;
 		 if(type==1) {
-			 sql="select s.* from sale s inner join shop p on s.shopId = p.shopId and p.shopName=? ";
+			 sql="select s.*,p.shopName,d.produceName from sale s, shop p, produce d where s.shopId = p.shopId and s.produceId = d.produceId  and p.shopName=? ";
 		 }else if(type==2) {
-			 sql= "select * from sale where saleId = ? ";
+			 sql= "select s.*,p.shopName,d.produceName from sale s, shop p, produce d where s.shopId = p.shopId and s.produceId = d.produceId  and s.saleId = ? ";
 		 }else if(type==3) {
-			 sql="select s.* from sale s inner join produce p on s.produceId = p.produceId and p.produceName=? ";
+			 sql="select s.*,p.shopName,d.produceName from sale s, shop p, produce d where s.shopId = p.shopId and s.produceId = d.produceId  and d.produceName=? ";
 		 }
 		 Object[]object= {wordkey};
 		 ResultSet rs = execute_Query(sql, object);
@@ -119,8 +119,8 @@ public class saleDAOImplement extends Execute_CRUD implements SaleDAO  {
 				 int produceId = rs.getInt("produceId");
 				 int shopStoreId = rs.getInt("shopStoreId");
 				 int shopId = rs.getInt("shopId");
-				   String produceName= rs.getString("produceName");
-					  String shopName= rs.getString("shopName");
+				 String produceName= rs.getString("produceName");
+				 String shopName= rs.getString("shopName");
 				 sale = new Sale(saleId, salePrice, saleNum, proceeds, saleTime, employeeId, produceId, shopStoreId, shopId,produceName,shopName);
 				 sales.add(sale);
 			}

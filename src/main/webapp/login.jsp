@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> --%>
 <!DOCTYPE html>
 <html>
-<head>
+
+<!-- <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
   <style type="text/css">
@@ -107,8 +108,8 @@
  		 }
  	}
  </script>
-</head>
-<body>
+</head> -->
+<%-- <body>
 <div id ="login">
 <h3>进销存系统的登录</h3>
 <form class="form" action="<%=request.getContextPath()%>/EmployeeServer?op=login"  method="post">
@@ -118,5 +119,64 @@
 </form>
 <a href="<%=request.getContextPath()%>/ByEmail.jsp">找回密码</a>
 </div>
-</body>
+</body> --%>
+ <head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>进销存系统登录</title>
+<!--  /static/admin/layui/css/layui.css     <%-- <%=request.getContextPath()%> --%>/static/admin/css/login.css -->
+				<link rel="stylesheet" type="text/css" href="js/login.css" />
+		<link rel="stylesheet" type="text/css" href="js/layui.css" />
+
+	</head>
+
+	<body>
+		<div class="m-login-bg">
+			<div class="m-login">
+				<h3>进销存系统登录</h3>
+				<div class="m-login-warp">
+					<form class="layui-form" action="<%=request.getContextPath()%>/EmployeeServer?op=login"  method="post">
+						<div class="layui-form-item">
+							<input type="text" name="employeeCode" required lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-form-item">
+							<input type="text" name="employeePassword" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
+						</div>
+					 
+						<div class="layui-form-item m-login-btn">
+							<div class="layui-inline">
+								<input class="layui-btn layui-btn-normal" type="submit" value="login">
+							</div>
+							<div class="layui-inline">
+								<a href="<%=request.getContextPath()%>/ByEmail.jsp">找回密码</a>
+							</div>
+							 
+						</div>
+					</form>
+				</div>
+				<p class="copyright">copyright 2021-2022 </p>
+			</div>
+		</div>
+		
+	</body>
+	<script src="<%=request.getContextPath()%>/static/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			layui.use(['form', 'layedit', 'laydate'], function() {
+				var form = layui.form(),
+					layer = layui.layer;
+
+
+				//自定义验证规则
+				form.verify({
+					title: function(value) {
+						if(value.length < 5) {
+							return '标题至少得5个字符啊';
+						}
+					},
+					password: [/(.+){6,12}$/, '密码必须6到12位'],
+					verity: [/(.+){6}$/, '验证码必须是6位'],
+					
+				});
+			});
+		</script>
 </html>

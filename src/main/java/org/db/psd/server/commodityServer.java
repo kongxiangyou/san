@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.db.psd.fatory.FatoryModel;
 import org.db.psd.model.Employee;
-import org.db.psd.model.Produce;
-import org.db.psd.model.Supplier;
+import org.db.psd.model.Produce; 
 
 @WebServlet("/commodityServer")
 public class commodityServer extends HttpServlet {
@@ -45,7 +44,7 @@ public class commodityServer extends HttpServlet {
 		int b = FatoryModel.getInstanceFatory().getEmployeeDAO().employeeJudgeJurisdiction(employeeCode);
 		if(b<4) {
 			
-			path="/produce/produceMain.jsp";
+			path="/produce/produceCreate.jsp";
 		}else {
 			System.out.println("没有权限");
 			path="/Supermanager/show.jsp";
@@ -61,10 +60,8 @@ public class commodityServer extends HttpServlet {
 		String produceDescribe = request.getParameter("produceDescribe");
 		
 		String supplierName = request.getParameter("supplierName");
-		Supplier supplier = new Supplier(0, supplierName, 0);
-		boolean success = FatoryModel.getInstanceFatory().getSupplierDAO().createSupplier(supplier);
-		
-		
+		 
+	 
 		int employeeId = employee.getEmployeeId();
 		
 		Produce produce= new Produce(0, produceName, produceISBN, produceDescribe, employeeId,0,null);
@@ -106,20 +103,23 @@ public class commodityServer extends HttpServlet {
 	
 		if(b) {
 			System.out.println("修改成功");
-			path="/commodityServer?op=selectAll";
+			request.setAttribute("produce", produce);
+			path = "/produce/produceById.jsp";
 		}else {
+			path="/commodityServer?op=selectAll";
 			System.out.println("修改失败");
 		}
 	}
 	protected void doById(HttpServletRequest request, HttpServletResponse response) {
 		int produceId =Integer.parseInt(request.getParameter("produceId")) ;
-		
+	 
 		Produce produce= FatoryModel.getInstanceFatory().getProduceDAO().producebyId(produceId);
 		if(produce!=null) {
 			request.setAttribute("produce", produce);
 			path = "/produce/produceById.jsp";
 		}else {
 			System.out.println("查询失败");
+			path = "/false.jsp";
 		}
 		
 	}

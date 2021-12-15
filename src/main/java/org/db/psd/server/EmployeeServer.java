@@ -64,11 +64,12 @@ public class EmployeeServer extends HttpServlet {
 		Employee employee = new Employee(0, employeeCode, null, employeePassword, null, null, null, null, null, null,
 				null, null, null, 0, null, null,null);
 		int value = FatoryModel.getInstanceFatory().getEmployeeDAO().employeeLogin(employee);
-		if (value != 0) {
+		 
+		if (value >0) {
 			request.getSession().setAttribute("employee", employee);
 			path = "/Supermanager/show.jsp";
 		} else {
-			path = "/login";
+			path = "/login.jsp";
 		}
 	}
 
@@ -122,7 +123,6 @@ public class EmployeeServer extends HttpServlet {
 
 	protected void doCreate(HttpServletRequest request, HttpServletResponse response) {
 		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		String employeeCode = request.getParameter("employeeCode");
 		String employeeName = request.getParameter("employeeName");
@@ -131,13 +131,9 @@ public class EmployeeServer extends HttpServlet {
 
 		String employeePhone = request.getParameter("employeePhone");
 		String employeeEmail = request.getParameter("employeeEmail");
-		Date employeeBrithday = null;
+		String employeeBrithday =request.getParameter("employeeBrithday");
 
-		try {
-			employeeBrithday = simpleDateFormat.parse(request.getParameter("employeeBrithday"));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		 
 		String employeeIdentity = request.getParameter("employeeIdentity");
 		String employeeState = request.getParameter("employeeState");
 		String employeeIntroduction = request.getParameter("employeeIntroduction");
@@ -146,7 +142,7 @@ public class EmployeeServer extends HttpServlet {
 		String employeeJobName = request.getParameter("employeeJobName");
 		String employeeDescribe = request.getParameter("employeeDescribe");
 		String pciture = request.getParameter("pciture");
-		 //System.out.println(pciture);
+		 System.out.println(pciture+"+++++++++"+employeeJobName+"===="+employeePassword);
 		EmployeeJob employeeJob = new EmployeeJob(0, employeeJobName, employeeDescribe);
 		int employeeJobId = FatoryModel.getInstanceFatory().getEmployeeJobDAO().jobCreate(employeeJob);
 
@@ -157,9 +153,10 @@ public class EmployeeServer extends HttpServlet {
 		boolean b = FatoryModel.getInstanceFatory().getEmployeeDAO().employeeCreate(employee);
 
 		if (b) {
-			path = "/Supermanager/show.jsp";
+			path = "/Supermanager/welcome.jsp";
 		} else {
 			System.out.println("false");
+			path="/Supermanager/regist.jsp";
 		}
 	}
 
@@ -185,21 +182,34 @@ public class EmployeeServer extends HttpServlet {
 	protected void doByCode(HttpServletRequest request, HttpServletResponse response) {
 		 
 		String employeeCode = request.getParameter("employeeCode");
+	 
 		Employee employee = FatoryModel.getInstanceFatory().getEmployeeDAO().employeeById(employeeCode);
+		//System.out.println(employee);
+		if(employee!=null) {
 		request.setAttribute("employee", employee);
 		path = "/Supermanager/byCode.jsp";
+		}else {
+			path = "/EmployeeServer?op=select";
+		}
 	}
 	protected void doByMore(HttpServletRequest request, HttpServletResponse response) {
 		String wordkey = request.getParameter("wordkey");
 		String employeeState = request.getParameter("employeeState");
 		String employeeJobName = request.getParameter("employeeJobName");
 		int type = Integer.parseInt(request.getParameter("type"));
-		  
-		List<Employee> employees =FatoryModel.getInstanceFatory().getEmployeeDAO().multipleChoice(employeeJobName, employeeState,wordkey, type);
+		 
+		List<Employee> employees =FatoryModel.getInstanceFatory().getEmployeeDAO().multipleChoice(wordkey,employeeState,employeeJobName,  type);
+		 
+		if(employees!=null) {
+			request.setAttribute("employees", employees);
+			path="/Supermanager/byMore.jsp";
+		}else {
+			System.out.println("查询失败");
+			path="/EmployeeServer?op=select";
+		}
 		
-		request.setAttribute("employees", employees);
 
-		path="/Supermanager/byMore.jsp";
+		
 		
 	}
 	protected void doUpdate(HttpServletRequest request, HttpServletResponse response) {
@@ -207,18 +217,14 @@ public class EmployeeServer extends HttpServlet {
 
 		String employeeCode = request.getParameter("employeeCode");
 		String employeeName = request.getParameter("employeeName");
-		String employeePassword = request.getParameter("employeePassword");
+		/* String employeePassword = request.getParameter("employeePassword"); */
 		String employeeGender = request.getParameter("employeeGender");
 
 		String employeePhone = request.getParameter("employeePhone");
 		String employeeEmail = request.getParameter("employeeEmail");
-		Date employeeBrithday = null;
+		String employeeBrithday = request.getParameter("employeeBrithday");
 
-		try {
-			employeeBrithday = simpleDateFormat.parse(request.getParameter("employeeBrithday"));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+ 
 		String employeeIdentity = request.getParameter("employeeIdentity");
 		String employeeState = request.getParameter("employeeState");
 		String employeeIntroduction = request.getParameter("employeeIntroduction");
@@ -232,7 +238,7 @@ public class EmployeeServer extends HttpServlet {
 		EmployeeJob employeeJob = new EmployeeJob(employeeJobId, employeeJobName, employeeDescribe);
 		boolean b = FatoryModel.getInstanceFatory().getEmployeeJobDAO().jobUpdate(employeeJob);
 		if(b) {
-			Employee employee = new Employee(0, employeeCode, employeeName, employeePassword, employeeGender, employeePhone,
+			Employee employee = new Employee(0, employeeCode, employeeName, null, employeeGender, employeePhone,
 				employeeEmail, employeeBrithday, employeeIdentity, employeeState, employeeIntroduction, employeeAddress,
 				employeeEducation, 0, null, null,pciture);
 			b=FatoryModel.getInstanceFatory().getEmployeeDAO().employeeUpdateInformation(employee);
@@ -256,7 +262,7 @@ public class EmployeeServer extends HttpServlet {
 		
 		boolean b = FatoryModel.getInstanceFatory().getEmployeeDAO().employeeUpdatePassword(employeeCode,employeePassword);
 		if(b) {
-			path="/Supermanager/show.jsp";
+			path="/Supermanager/welcome.jsp";
 		}else {
 			System.out.println("修改失败");
 			path="/Supermanager/show.jsp";

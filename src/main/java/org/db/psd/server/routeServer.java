@@ -14,8 +14,7 @@ import org.db.psd.fatory.FatoryModel;
 import org.db.psd.model.Employee;
 import org.db.psd.model.EmployeeJob;
 import org.db.psd.model.Sale;
-import org.db.psd.model.Shopstore;
-import org.db.psd.model.Supplier;
+import org.db.psd.model.Shopstore; 
 
 @WebServlet("/routeServer")
 public class routeServer extends HttpServlet {
@@ -54,14 +53,14 @@ public class routeServer extends HttpServlet {
 		Employee employee = (Employee)request.getSession().getAttribute("employee");
 		String employeeCode = employee.getEmployeeCode();
 		int b = FatoryModel.getInstanceFatory().getEmployeeDAO().employeeJudgeJurisdiction(employeeCode);
-		
+		System.out.println(employeeCode+"--------");
 		if(b==1) {
 			List<EmployeeJob> employeeJobs = FatoryModel.getInstanceFatory().getEmployeeJobDAO().employeeJobList();
 			request.setAttribute("employeeJobs", employeeJobs);
 			path = "/Supermanager/regist.jsp";
 		}else {
 			System.out.println("没有权限");
-			path="/Supermanager/show.jsp";
+			path="/Supermanager/welcome.jsp";
 		}
 	}
 	protected void doProduceManger(HttpServletRequest request, HttpServletResponse response) {
@@ -69,14 +68,14 @@ public class routeServer extends HttpServlet {
 		String employeeCode = employee.getEmployeeCode();
 		int b = FatoryModel.getInstanceFatory().getEmployeeDAO().employeeJudgeJurisdiction(employeeCode);
 		int produceId =Integer.parseInt( request.getParameter("produceId")) ;
-		List<Supplier> suppliers = FatoryModel.getInstanceFatory().getSupplierDAO().select();
+		 
 		if(b==1 || b==2) {
 			request.setAttribute("produceId", produceId);
-			request.setAttribute("suppliers", suppliers);
+			 
 			path = "/Producemanager/ProduceManagerCreate.jsp";
 		}else {
 			System.out.println("没有权限");
-			path="/produce/produceMain.jsp";
+			path="/Supermanager/welcome.jsp";
 		}
 	}
 	protected void doProduceManger2(HttpServletRequest request, HttpServletResponse response) {
@@ -89,7 +88,7 @@ public class routeServer extends HttpServlet {
 			path = "/procurementServer?op=select";
 		}else {
 			System.out.println("没有权限");
-			path="/produce/produceMain.jsp";
+			path="/Supermanager/welcome.jsp";
 		}
 	}
 	protected void doWarehouse(HttpServletRequest request, HttpServletResponse response) {
@@ -97,10 +96,10 @@ public class routeServer extends HttpServlet {
 		String employeeCode = employee.getEmployeeCode();
 		int b = FatoryModel.getInstanceFatory().getEmployeeDAO().employeeJudgeJurisdiction(employeeCode);		
 		if(b==1 || b==3) {
-			path = "/warehouseman/warehousemain.jsp";
+			path = "/inventoryServer?op=showprocurement";
 		}else {
 			System.out.println("没有权限");
-			path="/Supermanager/show.jsp";
+			path="/Supermanager/welcome.jsp";
 		}
 	}
 	protected void doShop(HttpServletRequest request, HttpServletResponse response) {
@@ -108,10 +107,10 @@ public class routeServer extends HttpServlet {
 		String employeeCode = employee.getEmployeeCode();
 		int b = FatoryModel.getInstanceFatory().getEmployeeDAO().employeeJudgeJurisdiction(employeeCode);		
 		if(b==1 || b==4) {
-			path = "/ShopManager/ShopMain.jsp";
+			path = "/ShopManager/shopCreate.jsp";
 		}else {
 			System.out.println("没有权限");
-			path="/Supermanager/show.jsp";
+			path="/Supermanager/welcome.jsp";
 		}
 	}
 	protected void doSale(HttpServletRequest request, HttpServletResponse response) {

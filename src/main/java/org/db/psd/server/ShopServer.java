@@ -50,7 +50,10 @@ public class ShopServer extends HttpServlet {
 		 }else if(op.equals("recruit")) {
 			 
 			 doRecruit(request, response);
-		 } 
+		 } else if(op.equals("SelectEmployees")){
+			 
+			 doSelectEmployees(request, response);
+		 }
 		 request.getRequestDispatcher(path).forward(request, response);
 	}
 	protected void doCreate(HttpServletRequest request, HttpServletResponse response) {
@@ -64,7 +67,7 @@ public class ShopServer extends HttpServlet {
 			 path="/ShopServer?op=list";
 			 System.out.println("shop success");
 		 }else {
-			 path= "/ShopManager/ShopMain.jsp";
+			 path= "/false.jsp";
 			 System.out.println("shop false");
 		 }
 	}
@@ -106,21 +109,22 @@ public class ShopServer extends HttpServlet {
 			 path="/ShopServer?op=list";
 			 System.out.println("update success");
 		 }else {
-			 path= "/ShopManager/ShopMain.jsp";
+			 path= "/false.jsp";
 			 System.out.println("update false");
 		 }
 	}
 	protected void doByMore(HttpServletRequest request, HttpServletResponse response) {
 		String wordkey = request.getParameter("wordkey");
 		int type =Integer.parseInt( request.getParameter("type")) ;
+		/* System.out.println(type+"----"+wordkey); */
 		List<Shop> shops = FatoryModel.getInstanceFatory().getShopDAO().shopByMore(wordkey, type);
 		
 		if(shops!=null) {
 			request.setAttribute("shops", shops);
-			path="/ShopManager/ShopByMore.jsp";
+			path="/ShopManager/shopByMore.jsp";
 		 System.out.println("select success");
 		}else {
-		 path= "/ShopManager/ShopMain.jsp";
+		 path= "/false.jsp";
 		 System.out.println("select false");
 		}
 	}
@@ -151,6 +155,7 @@ public class ShopServer extends HttpServlet {
 	protected void doRecruit(HttpServletRequest request, HttpServletResponse response) {
 		int shopId =Integer.parseInt(request.getParameter("shopId") ) ;
 		int employeeId =Integer.parseInt(request.getParameter("employeeId") ) ;
+		
 		boolean b = FatoryModel.getInstanceFatory().getShopDAO().shopUpdate(shopId, employeeId);
 		if(b) {
 			List<Shop> shops = FatoryModel.getInstanceFatory().getShopDAO().shopList(shopId);
@@ -158,5 +163,12 @@ public class ShopServer extends HttpServlet {
 			request.setAttribute("shops", shops);
 			path="/ShopManager/showEmployee.jsp";
 		}
+	}
+	
+	protected void doSelectEmployees(HttpServletRequest request, HttpServletResponse response) {
+		int shopId =Integer.parseInt(request.getParameter("shopId") ) ;
+		List<Shop> shops = FatoryModel.getInstanceFatory().getShopDAO().shopList(shopId);
+		request.setAttribute("shops", shops);
+		path="/ShopManager/showEmployee.jsp";
 	}
 }

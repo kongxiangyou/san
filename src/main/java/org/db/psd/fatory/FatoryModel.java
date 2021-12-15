@@ -11,8 +11,7 @@ import org.db.psd.dao.SaleDAO;
 import org.db.psd.dao.ShopDAO;
 import org.db.psd.dao.ShopStoreDAO;
 import org.db.psd.dao.SplitDAO;
-import org.db.psd.dao.StoreDAO;
-import org.db.psd.dao.SupplierDAO;
+import org.db.psd.dao.StoreDAO; 
 import org.db.psd.impl.EmployeeDAOImplement;
 import org.db.psd.impl.EmployeeJobDAOImplement;
 import org.db.psd.impl.InventoryDAOImplement;
@@ -23,8 +22,7 @@ import org.db.psd.impl.Province_city_countyDAOImpl;
 import org.db.psd.impl.ShopDAOImplement;
 import org.db.psd.impl.ShopStoreDAOImplement;
 import org.db.psd.impl.SplitDAOImpl;
-import org.db.psd.impl.StoreDAOImplement;
-import org.db.psd.impl.SupplierDAOImpl;
+import org.db.psd.impl.StoreDAOImplement; 
 import org.db.psd.impl.saleDAOImplement;
 
 public class FatoryModel {
@@ -41,7 +39,7 @@ public class FatoryModel {
 	private StoreDAO storeDAO;
 	private SplitDAO splitDAO;
 	private SaleDAO saleDAO;
-	private SupplierDAO supplierDAO;
+	 
 	private Province_city_countyDAO pccDao;
 
 	public static FatoryModel getInstanceFatory() {
@@ -126,12 +124,7 @@ public class FatoryModel {
 		}
 		return saleDAO;
 	}
-	public SupplierDAO getSupplierDAO() {
-		if (supplierDAO == null) {
-			supplierDAO = new SupplierDAOImpl();
-		}
-		return supplierDAO;
-	}
+	 
 	public Province_city_countyDAO getProvince_city_countyDAO() {
 		if (pccDao == null) {
 			pccDao = new Province_city_countyDAOImpl();

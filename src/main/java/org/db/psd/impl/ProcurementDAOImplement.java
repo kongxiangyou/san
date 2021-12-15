@@ -65,6 +65,8 @@ public class ProcurementDAOImplement extends Execute_CRUD implements Procurement
 					produceName,employeeName, procurementId };
 			b = execute_CUD(sql, object);
 
+		}else {
+			System.out.println("商品已入库");
 		}
 
 		return b;

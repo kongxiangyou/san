@@ -1,6 +1,5 @@
 package org.db.psd.model;
-
-import java.util.Date;
+ 
 
 /**
  *
@@ -18,7 +17,7 @@ public class Employee {
 	private String employeeGender;
 	private String employeePhone;
 	private String employeeEmail;
-	private Date employeeBrithday;
+	private String employeeBrithday;
 	private String employeeIdentity;//身份证号
 	private String employeeState; // -- 状态：在职，离职，出差，休假，其他
 	private String employeeIntroduction;// -- 简介
@@ -44,7 +43,7 @@ public class Employee {
 
 
 	public Employee(int employeeId, String employeeCode, String employeeName, String employeePassword,
-			String employeeGender, String employeePhone, String employeeEmail, Date employeeBrithday,
+			String employeeGender, String employeePhone, String employeeEmail, String employeeBrithday,
 			String employeeIdentity, String employeeState, String employeeIntroduction, String employeeAddress,
 			String employeeEducation, int employeeJobId, String employeeJobName, String employeeDescribe,
 			String pciture) {
@@ -190,11 +189,11 @@ public class Employee {
 		this.employeeEmail = employeeEmail;
 	}
 
-	public Date getemployeeBrithday() {
+	public String getemployeeBrithday() {
 		return employeeBrithday;
 	}
 
-	public void setemployeeBrithday(Date employeeBrithday) {
+	public void setemployeeBrithday(String employeeBrithday) {
 		this.employeeBrithday = employeeBrithday;
 	}
 

@@ -8,6 +8,6 @@
 </head>
 <body>
 false
-<a href="<%=request.getContextPath()%>/EmployeeServer?op=select">返回</a>
+<a href="<%=request.getContextPath()%>/Supermanager/welcome.jsp">首页</a>
 </body>
 </html>

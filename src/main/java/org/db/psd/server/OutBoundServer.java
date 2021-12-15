@@ -70,7 +70,7 @@ public class OutBoundServer extends HttpServlet {
 				  path="/OutBoundServer?op=list";
 			  }else {
 				  System.out.println("outbound false");
-				  path="/warehouseman/warehousemain.jsp";
+				  path="/false.jsp";
 			  }
 	
 	}
@@ -110,7 +110,7 @@ public class OutBoundServer extends HttpServlet {
 			 request.setAttribute("outbound", outbound);
 			 path="/warehouseman/OutboundById.jsp";
 		 }else {
-			 path="/warehouseman/warehousemain.jsp";
+			 path="/false.jsp";
 		 }
 		 
 	}
@@ -121,7 +121,7 @@ public class OutBoundServer extends HttpServlet {
 			 request.setAttribute("outbound", outbound);
 			 path="/warehouseman/OutboundList.jsp";
 		 }else {
-			 path="/warehouseman/warehousemain.jsp";
+			 path="/false.jsp";
 		 }
 		 
 	}
